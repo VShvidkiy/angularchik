@@ -27,5 +27,32 @@ describe('Scope', function() {
 
 			expect(watchCallback).toHaveBeenCalled();
 		});
+
+		it('calls watch callback with scope as its argument', function() {
+		});
+
+		it('calls watch callback when the scope value changed', function() {
+		});
+
+		it('triggers chained watchers', function() {
+		});
+
+		it('throws an error when infinite loop detected', function() {
+		});
+
+		it('is optimized', function() {
+		});
+
+		it('equality', function() {
+		});
+
+		it('NaN', function() {
+		});
+
+		it('can destroy a watch', function() {
+		});
+
+		it('can destroy itself', function() {
+		});
 	});*/
 });
