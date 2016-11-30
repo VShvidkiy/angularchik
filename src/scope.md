@@ -46,16 +46,59 @@ personNameEl.onchange = function(e) {
 
 ####Dirty checking
 
-Что предлагает ангулар? Они решили что реализация геттера и сеттера для каждого поля в модели данных является не самым лучшим решением.
+#####$watch и $digest
+
+Dirty checking -- это вид биндинга, в котором происходит периодическая проверка данных на измененность.
+
+К примеру, у нас есть переменная `а`, которой присвоено значение 10. И после вызова какойто функции мы хотим проверить поменялось ли значение `а`?
 
 ```
-var scope = new Scope();
+var a = 10;
 
-scope.a = 10;
+var oldA = a;
+//some code here
 
-scope.$digest();
-
-scope.a = 20;
-
-scope.$digest();
+if (a !=== oldA) {
+//a has been changed
+}
 ```
+
+Функция `$watch`, как раз и реализует такую проверку.
+
+```
+var dataToWatchFn = function(scope) {
+  return scope.a;
+};
+
+var watchListener = function(newData, OldData, scope) {
+  //data has been changed
+};
+
+scope.$watch(dataToWatchFn, watchListener);
+```
+
+Внутри, у скоупа есть массив $$watchers, в который добавляются аргументы переданные в метод `$watch`
+
+```
+Scope.prototype.$watch = function(watchFn, listenerFn) {
+	this.$watchers.push({
+		watchFn: watchFn,
+		listenerFn: listenerFn
+	});
+};
+```
+
+Как говорилось раньше, Dirty checking -- это вид биндинга, в котором происходит периодическая проверка данных на измененность.
+В ангуларе, такую проверку запускает функция `$digest`. Ее задача пройтись по всем вотчерам, выполнить функцию `watchFn`, только если данные поменялись, и в случае их изменения, вызвать `listenerFn`. Ниже представлена наивная реализация:
+
+```
+Scope.prototype.$digest = function() {
+	for (var i = this.$watchers.length - 1; i >= 0; i--) {
+		var watcher = this.$watchers[i];
+
+		watcher.watchFn(this);
+		watcher.listenerFn(this);
+	}
+};
+```
+
