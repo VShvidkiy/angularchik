@@ -6,7 +6,7 @@ describe('Scope', function() {
 		expect(scope).toBeDefined();
 	});
 
-	describe('digest', function() {
+	describe('$digest', function() {
 		var scope = null;
 
 		beforeEach(function() {
@@ -258,7 +258,9 @@ describe('Scope', function() {
 		});
 
 		xit('allows destroying several $watches during digest', function() {
+		});
 
+		xit('optimize $digest circle', function() {
 		});
 	});
 
