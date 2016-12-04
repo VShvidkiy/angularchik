@@ -102,3 +102,4 @@ Scope.prototype.$digest = function() {
 };
 ```
 
+#####$eval и $apply
